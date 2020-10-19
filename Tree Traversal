@@ -1,0 +1,51 @@
+ #include <bits/stdc++.h>
+    #define ll long long int
+    #define mod 1000000007
+    using namespace std;
+
+    void dfs(bool visited[], int counts[], vector<int> adj[], int s) {
+        visited[s] = true;
+        counts[s] = 1;
+        for (auto u : adj[s]) {
+            if (visited[u])
+                continue;
+            visited[u] = true;
+            dfs(visited, counts, adj, u);
+            counts[s] += counts[u];
+        }
+    }
+
+    void solve() {
+        int n;
+        cin >> n; // n-number of nodes in subtree.
+        vector<int> adj[n + 1];
+        for (int i = 1; i < n; i++) { // number of edges in tree = nodes - 1
+            int u, v;
+            cin >> u >> v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        bool visited[n + 1];
+        memset(visited, false, sizeof visited);
+        int counts[n + 1];
+
+        // calling dfs on root node 1.
+        dfs(visited, counts, adj, 1);
+
+        cout << "Subtree roots: ";
+        for (int i = 1; i <= n; i++)
+            cout << i << " ";
+        cout << "\n";
+        cout << "Num. of nodes: ";
+        for (int i = 1; i <= n; i++)
+            cout << counts[i] << " ";
+        cout << "\n";
+    }
+
+    int main() {
+        ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
+        solve();
+        return 0;
+    }
